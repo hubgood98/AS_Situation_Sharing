@@ -1,7 +1,6 @@
 package com.example.as_situation_sharing_web.controller;
 
 import com.example.as_situation_sharing_web.domain.Question;
-import com.example.as_situation_sharing_web.domain.QuestionForm;
 import com.example.as_situation_sharing_web.service.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.List;
 
 @Controller
@@ -37,21 +34,16 @@ public class QuestionController {
     }
 
     @GetMapping("/create")
-    public String questionCreate(QuestionForm questionForm) {
+    public String questionCreate() {
 
-        return "redirect:/question/list";
+        return "question_form";
     }
 
-
-
     @PostMapping("/create")
-    public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult){
-           if(bindingResult.hasErrors())
-           {
-               return "question_form";
-           }
-           this.questionService.create(questionForm.getSubject(),questionForm.getContent());
+    public String questionCreate(@Valid @RequestParam("subject") String subject,
+                                 @RequestParam("content") String content) {
 
+        this.questionService.create(subject, content);
         return "redirect:/question/list";
     }
 
