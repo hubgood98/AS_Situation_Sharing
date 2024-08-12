@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>질문상세</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="container mt-5">
+    <!-- 페이지 제목 -->
+    <h2 class="text-center mb-4">안녕 템플릿!</h2>
+
+    <!-- 질문 제목 -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h1 class="card-title" th:text="${question.subject}"></h1>
+            <p class="card-text" th:text="${question.content}"></p>
+        </div>
+    </div>
+
+    <!-- 답변 목록 -->
+    <h5 class="mb-3" th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
+    <ul class="list-group mb-4">
+        <li class="list-group-item" th:each="answer : ${question.answerList}" th:text="${answer.content}"></li>
+    </ul>
+
+    <!-- 답변 작성 폼 -->
+    <div class="card">
+        <div class="card-body">
+            <form th:action="@{|/answer/create/${question.id}|}" method="post">
+                <div class="form-group">
+                    <label for="content">답변 내용</label>
+                    <textarea class="form-control" name="content" id="content" rows="5"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">답변 등록</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
