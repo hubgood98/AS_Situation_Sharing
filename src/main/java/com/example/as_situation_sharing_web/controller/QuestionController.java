@@ -38,8 +38,11 @@ public class QuestionController {
 
     @GetMapping("/create")
     public String questionCreate(QuestionForm questionForm) {
-        return "question_form";
+
+        return "redirect:/question/list";
     }
+
+
 
     @PostMapping("/create")
     public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult){
