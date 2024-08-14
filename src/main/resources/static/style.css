@@ -1,7 +1,42 @@
-textarea{
-    width: 100px;
+/* 텍스트 영역의 기본 너비를 더 유연하게 조정 */
+textarea {
+    width: 100%; /* 부모 요소의 너비에 맞게 설정 */
+    max-width: 100%; /* 최대 너비 제한 */
+    height: auto; /* 기본 높이는 필요에 따라 조정 */
+    resize: vertical; /* 세로 크기만 조절 가능 */
 }
 
-input[type=submit]{
+/* 제출 버튼의 마진을 유지 */
+input[type=submit] {
     margin-top: 10px;
+}
+
+/* 네비게이션 바의 브랜드 스타일 */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #007bff;
+}
+
+/* 네비게이션 링크 스타일 */
+.navbar-nav .nav-link {
+    font-size: 1.1rem;
+    color: #495057;
+    transition: color 0.3s ease-in-out;
+}
+
+/* 네비게이션 링크에 호버 효과 추가 */
+.navbar-nav .nav-link:hover {
+    color: #007bff;
+}
+
+/* 햄버거 메뉴 아이콘 스타일 */
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* 네비게이션 바 스타일 */
+.navbar {
+    background-color: #f8f9fa; /* 밝은 배경색 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
