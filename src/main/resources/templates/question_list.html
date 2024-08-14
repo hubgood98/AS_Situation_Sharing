@@ -38,8 +38,17 @@
                 </a>
             </li>
 
+            <!-- 첫 페이지로 이동 -->
+            <li class="page-item" th:if="${paging.number > 5}">
+                <a class="page-link" th:href="@{|/question/list?page=0|}">1</a>
+            </li>
+            <li class="page-item disabled" th:if="${paging.number > 5}">
+                <span class="page-link">...</span>
+            </li>
+
             <!-- 페이지 번호 -->
             <li class="page-item" th:each="i : ${#numbers.sequence(1, paging.totalPages)}"
+                th:if="${i >= paging.number - 5 and i <= paging.number + 5}"
                 th:classappend="${i == paging.number + 1} ? 'active'">
                 <a class="page-link" th:href="@{|/question/list?page=${i - 1}|}" th:text="${i}"></a>
             </li>

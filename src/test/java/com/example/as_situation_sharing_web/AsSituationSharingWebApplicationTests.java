@@ -12,7 +12,13 @@ class AsSituationSharingWebApplicationTests {
     private QuestionService questionService;
 
     @Test
-    void contextLoads() {
+    void testBoardList() {
+        for(int i=1;i<=200;i++)
+        {
+            String subject = String.format("테스트 데이터 :[%03d]",i);
+            String content = "내용은 없습니다";
+            this.questionService.create(subject,content);
+        }
     }
 
 }
