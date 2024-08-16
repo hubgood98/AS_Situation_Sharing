@@ -23,4 +23,8 @@ public class UserService {
 
         return user;
     }
+
+    public boolean isUsernameTaken(String username) {
+        return this.userRepository.existsByUsername(username);
+    }
 }
