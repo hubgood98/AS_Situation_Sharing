@@ -25,6 +25,10 @@ public class UserService {
     }
 
     public boolean isUsernameTaken(String username) {
-        return this.userRepository.existsByUsername(username);
+        return userRepository.existsByUsername(username);
+    }
+
+    public boolean isEmailTaken(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserCreateForm {
-    @Size(min =3, max =25)
+    @Size(min =3, max =25,message = "사용자 ID는 최소 3자 이상, 최대 25자 이하여야 합니다.")
     @NotEmpty(message = "사용자 Id는 필수 항목입니다.")
     private String username;
 

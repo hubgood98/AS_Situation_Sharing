@@ -25,11 +25,16 @@
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">이메일</label>
-            <input type="email" th:field="*{email}" id="email" class="form-control">
-        </div>
+            <div class="input-group">
+                <input type="email" th:field="*{email}" id="email" class="form-control">
+                <button type="button" class="btn btn-secondary" onclick="checkEmail()">중복 확인</button>
+            </div>
         <button type="submit" class="btn btn-primary">회원 가입</button>
+        </div>
     </form>
 
-    <script src="/account.js"></script>
 </div>
+<th:block layout:fragment="AddScripts">
+    <script th:src="@{/account.js}"></script>
+</th:block>
 </html>

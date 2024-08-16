@@ -6,9 +6,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class UserController {
             return "signup_form";
         }
 
-        if(!userCreateForm.getPassword1().equals(userCreateForm.getPassword2()))
+        if(!userCreateForm.isPasswordConfirmed())
         {
             bindingResult.rejectValue("password2","passwordInCorrect","2개의 비밀번호가 일치하지 않습니다.");
 
@@ -53,5 +54,25 @@ public class UserController {
             return "signup_form";
         }
         return "redirect:/";
+    }
+
+    @GetMapping("/checkUsername")
+    @ResponseBody
+    public Map<String,Boolean> checkUsername(@RequestParam String username){
+        boolean exists = userService.isUsernameTaken(username);
+
+        Map<String,Boolean> response = new HashMap<>();
+        response.put("exists",exists);
+
+        return response;
+    }
+
+    @GetMapping("/checkEmail")
+    @ResponseBody
+    public Map<String, Boolean> checkEmail(@RequestParam String email) {
+        boolean exists = userService.isEmailTaken(email);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return response;
     }
 }
