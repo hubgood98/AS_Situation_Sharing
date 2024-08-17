@@ -1,5 +1,6 @@
 package com.example.as_situation_sharing_web.user;
 
+import com.example.as_situation_sharing_web.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;

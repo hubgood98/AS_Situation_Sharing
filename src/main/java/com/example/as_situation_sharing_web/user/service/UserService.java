@@ -1,5 +1,7 @@
-package com.example.as_situation_sharing_web.user;
+package com.example.as_situation_sharing_web.user.service;
 
+import com.example.as_situation_sharing_web.user.UserData;
+import com.example.as_situation_sharing_web.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
