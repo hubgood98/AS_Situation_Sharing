@@ -75,4 +75,9 @@ public class UserController {
         response.put("exists", exists);
         return response;
     }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login_form";
+    }
 }
