@@ -1,5 +1,6 @@
 package com.example.as_situation_sharing_web.domain;
 
+import com.example.as_situation_sharing_web.user.UserData;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 public class Answer {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+private Integer id;
 
 @Column(columnDefinition = "Text")
 private String content;
@@ -27,4 +28,6 @@ private LocalDateTime createDate;
 @ManyToOne
 private Question question;
 
+@ManyToOne
+private UserData author;
 }

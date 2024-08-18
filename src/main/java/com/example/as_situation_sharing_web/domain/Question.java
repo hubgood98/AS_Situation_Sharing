@@ -1,5 +1,6 @@
 package com.example.as_situation_sharing_web.domain;
 
+import com.example.as_situation_sharing_web.user.UserData;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,9 @@ public class Question {
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    @ManyToOne
+    private UserData author;
 
     private LocalDateTime createDate;
     @OneToMany(mappedBy = "question",cascade = CascadeType.REMOVE)

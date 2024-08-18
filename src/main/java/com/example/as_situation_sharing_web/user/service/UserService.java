@@ -1,10 +1,13 @@
 package com.example.as_situation_sharing_web.user.service;
 
+import com.example.as_situation_sharing_web.exception.DataNotFoundException;
 import com.example.as_situation_sharing_web.user.UserData;
 import com.example.as_situation_sharing_web.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -24,6 +27,15 @@ public class UserService {
         this.userRepository.save(user);
 
         return user;
+    }
+
+    public UserData getUser(String username) {
+        Optional<UserData> userData = this.userRepository.findByUsername(username);
+        if(userData.isPresent()) {
+            return userData.get();
+        }else{
+            throw new DataNotFoundException("user not fount");
+        }
     }
 
     public boolean isUsernameTaken(String username) {

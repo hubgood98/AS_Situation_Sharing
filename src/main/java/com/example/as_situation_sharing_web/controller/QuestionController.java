@@ -2,6 +2,8 @@ package com.example.as_situation_sharing_web.controller;
 
 import com.example.as_situation_sharing_web.domain.Question;
 import com.example.as_situation_sharing_web.service.QuestionService;
+import com.example.as_situation_sharing_web.user.UserData;
+import com.example.as_situation_sharing_web.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,12 +11,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/question")
 @RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionService questionService;
+    private final UserService userService;
 
     @GetMapping("/list")
     public String list(Model model,@RequestParam(value = "page", defaultValue = "0") int page)
@@ -40,9 +45,10 @@ public class QuestionController {
 
     @PostMapping("/create")
     public String questionCreate(@Valid @RequestParam("subject") String subject,
-                                 @RequestParam("content") String content) {
+                                 @RequestParam("content") String content, Principal principal) {
 
-        this.questionService.create(subject, content);
+        UserData userData = this.userService.getUser(principal.getName());
+        this.questionService.create(subject, content,userData);
         return "redirect:/question/list";
     }
 
