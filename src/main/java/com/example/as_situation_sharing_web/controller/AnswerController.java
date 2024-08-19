@@ -6,6 +6,7 @@ import com.example.as_situation_sharing_web.service.QuestionService;
 import com.example.as_situation_sharing_web.user.UserData;
 import com.example.as_situation_sharing_web.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ public class AnswerController {
     private final AnswerService answerService;
     private final UserService userService;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
     public String createAnswer(@PathVariable Integer id,
                                @RequestParam(value="content") String content, Model model, Principal principal) {

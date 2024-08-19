@@ -7,6 +7,7 @@ import com.example.as_situation_sharing_web.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,12 +38,14 @@ public class QuestionController {
         return "question_detail";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public String questionCreate() {
 
         return "question_form";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String questionCreate(@Valid @RequestParam("subject") String subject,
                                  @RequestParam("content") String content, Principal principal) {
