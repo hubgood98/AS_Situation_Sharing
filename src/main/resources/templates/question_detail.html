@@ -16,13 +16,27 @@
         <div class="card-body">
             <h1 class="card-title" th:text="${question.subject}"></h1>
             <p class="card-text" th:text="${question.content}"></p>
+
+            <!-- 글 작성자 및 작성 시간 표시 -->
+            <div class="mb-2">
+                <span th:if="${question.author != null}" th:text="${question.author.username}"></span>
+                <span th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+            </div>
         </div>
     </div>
 
     <!-- 답변 목록 -->
     <h5 class="mb-3" th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
     <ul class="list-group mb-4">
-        <li class="list-group-item" th:each="answer : ${question.answerList}" th:text="${answer.content}"></li>
+        <li class="list-group-item" th:each="answer : ${question.answerList}">
+            <!-- 답변 작성자 및 작성 시간 표시 -->
+            <div class="text-muted mb-2">
+                <span th:if="${answer.author != null}" th:text="${answer.author.username}"></span>
+                <span th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+            </div>
+            <!-- 답변 내용 -->
+            <p th:text="${answer.content}"></p>
+        </li>
     </ul>
 
     <!-- 답변 작성 폼 -->

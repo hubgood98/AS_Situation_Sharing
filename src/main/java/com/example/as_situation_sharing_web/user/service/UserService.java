@@ -29,6 +29,7 @@ public class UserService {
         return user;
     }
 
+    //UserData를 조회할 수 있는 메서드
     public UserData getUser(String username) {
         Optional<UserData> userData = this.userRepository.findByUsername(username);
         if(userData.isPresent()) {
