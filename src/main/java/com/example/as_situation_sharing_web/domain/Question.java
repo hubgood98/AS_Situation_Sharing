@@ -27,6 +27,8 @@ public class Question {
     private UserData author;
 
     private LocalDateTime createDate;
+    private LocalDateTime updateDate;
+
     @OneToMany(mappedBy = "question",cascade = CascadeType.REMOVE)
     private List<Answer> answerList;
 }

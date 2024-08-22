@@ -24,6 +24,7 @@ private Integer id;
 private String content;
 
 private LocalDateTime createDate;
+private LocalDateTime updateDate;
 
 @ManyToOne
 private Question question;
