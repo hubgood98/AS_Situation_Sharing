@@ -1,9 +1,12 @@
 package com.example.as_situation_sharing_web.dto.repairItem;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
-@Data
+@Builder
+@Getter
 public class RepairItemResponse {
     private Long id;
     private String name;

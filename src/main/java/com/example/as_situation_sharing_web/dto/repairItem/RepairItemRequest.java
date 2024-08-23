@@ -1,8 +1,10 @@
 package com.example.as_situation_sharing_web.dto.repairItem;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
+@Builder
+@Getter
 public class RepairItemRequest {
     private String name;
     private String description;
