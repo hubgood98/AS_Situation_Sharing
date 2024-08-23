@@ -1,14 +1,11 @@
 package com.example.as_situation_sharing_web.controller;
 
-import com.example.as_situation_sharing_web.dto.user.UserRequest;
 import com.example.as_situation_sharing_web.service.UserService;
 import com.example.as_situation_sharing_web.user.UserCreateForm;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -51,27 +48,39 @@ public class LoginController {
         return "signup_form";
     }
 
+    //Todo 로그인할때 빈 값으로 전송되는 문제 수정해야함.
     @PostMapping("/signup")
     @Operation(summary = "User signup", description = "새로운 사용자를 등록합니다.")
-    public ResponseEntity<?> signup(
-            @Valid @RequestBody UserRequest userRequest, BindingResult bindingResult) {
+    public String signup(@Valid @ModelAttribute("userCreateForm") UserCreateForm userCreateForm,
+                         BindingResult bindingResult,Model model) {
 
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+            return "signup_form";
+        }
+
+        if (!userCreateForm.isPasswordConfirmed()) {
+            bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
+            return "signup_form";
         }
 
         try {
-            userService.createUser(userRequest.getUserid(), userRequest.getPassword(),
-                    userRequest.getRole(), userRequest.getUsername(),
-                    userRequest.getEmail(), userRequest.getPhoneNumber(),
-                    userRequest.getBio());
+            userService.createUser(
+                    userCreateForm.getUserid(),
+                    userCreateForm.getPassword1(),
+                    userCreateForm.getRole(),
+                    userCreateForm.getUsername(),
+                    userCreateForm.getEmail(),
+                    userCreateForm.getPhoneNumber(),
+                    userCreateForm.getBio());
 
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 등록된 사용자입니다.");
+            bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
+            return "signup_form";
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러가 발생했습니다.");
+            bindingResult.reject("signupFailed", "서버 에러가 발생했습니다.");
+            return "signup_form";
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return "redirect:/user/login"; // 회원가입 후 로그인 페이지로 리다이렉트
     }
 }

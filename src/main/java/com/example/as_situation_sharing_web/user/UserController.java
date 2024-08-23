@@ -1,22 +1,22 @@
 package com.example.as_situation_sharing_web.user;
 
+import com.example.as_situation_sharing_web.domain.RepairItem;
 import com.example.as_situation_sharing_web.domain.UserData;
-import com.example.as_situation_sharing_web.dto.user.UserRequest;
 import com.example.as_situation_sharing_web.dto.user.UserResponse;
+import com.example.as_situation_sharing_web.service.RepairItemService;
 import com.example.as_situation_sharing_web.service.UserService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
@@ -27,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 public class UserController {
 
     private final UserService userService;
+    private final RepairItemService repairItemService;
 
 
     @GetMapping("/checkUserid")
@@ -69,4 +70,22 @@ public class UserController {
 
         return ResponseEntity.ok(userResponse);
     }
+
+    @GetMapping("/repairs")
+    public String getMyRepairs(Model model)
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName(); //현재 로그인한 사용자의 ID
+
+        //사용자 정보 가져옴
+        UserData customer = userService.getUserByUserId(userId);
+
+        List<RepairItem> repairItems = repairItemService.getRepairItemsByCustomer(customer);
+
+        model.addAttribute("repairItems", repairItems);
+
+        return "my_repairs";
+    }
+
+
 }

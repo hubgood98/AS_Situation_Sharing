@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>질문</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="container my-3">
+    <table class="table">
+        <thead class="table-dark">
+            <tr class="text-center">
+                <th>번호</th>
+                <th style="width:50%">상품명</th>
+                <th>설명</th>
+                <th>현재 단계</th>
+                <th>생성일자</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center" th:each="repairItem, loop : ${repairItems}">
+            <td th:text="${loop.index + 1}"></td>
+            <td th:text="${repairItem.name}"></td>
+            <td th:text="${repairItem.description}"></td>
+            <td th:text="${repairItem.currentStep}"></td>
+            <td th:text="${#temporals.format(repairItem.createdDate,'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
+</div>
+
+</body>
+</html>
