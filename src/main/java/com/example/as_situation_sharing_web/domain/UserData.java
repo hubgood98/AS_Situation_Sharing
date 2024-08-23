@@ -17,12 +17,14 @@ public class UserData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    private String userid; //로그인시 사용할 id
     private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;  // customer 또는 technician
+
+    private String username;
 
     @Column(unique = true, nullable = false)
     private String email;

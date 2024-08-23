@@ -1,6 +1,7 @@
 package com.example.as_situation_sharing_web.service;
 
 import com.example.as_situation_sharing_web.domain.RepairItem;
+import com.example.as_situation_sharing_web.exception.RepairItemNotFoundException;
 import com.example.as_situation_sharing_web.repository.RepairItemRepository;
 import com.example.as_situation_sharing_web.domain.UserData;
 import org.springframework.stereotype.Service;
@@ -31,11 +32,11 @@ public class RepairItemService {
         return repairItemRepository.findById(id);
     }
 
-    //새로운 수리 항목을 생성할때 사용됨
+    //새로운 수리 항목을 생성할때 사용됨 이때 name은 상품 이름
     @Transactional
-    public RepairItem createRepairItem(String name, String description, UserData customer) {
+    public RepairItem createRepairItem(String productName, String description, UserData customer) {
         RepairItem repairItem = RepairItem.builder()
-                .name(name)
+                .name(productName)
                 .description(description)
                 .customer(customer)
                 .createdDate(LocalDateTime.now())
@@ -46,6 +47,9 @@ public class RepairItemService {
 
     @Transactional
     public void deleteRepairItem(Long id) {
+        if (!repairItemRepository.existsById(id)) {
+            throw new RepairItemNotFoundException("Repair Item not found with id: " + id);
+        }
         repairItemRepository.deleteById(id);
     }
 
