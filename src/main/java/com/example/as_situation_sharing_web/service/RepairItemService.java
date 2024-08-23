@@ -23,8 +23,8 @@ public class RepairItemService {
     }
 
     @Transactional(readOnly = true)
-    public List<RepairItem> getRepairItemsByCustomer(UserData customer) {
-        return repairItemRepository.findByCustomer(customer);
+    public List<RepairItem> getRepairItemsByCustomer(UserData userId) {
+        return repairItemRepository.findByCustomer(userId);
     }
 
     @Transactional(readOnly = true)

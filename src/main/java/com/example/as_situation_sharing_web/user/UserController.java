@@ -7,6 +7,7 @@ import com.example.as_situation_sharing_web.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,29 +28,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/signup")
-    @Operation(summary = "User signup", description = "새로운 사용자를 등록합니다.")
-    public ResponseEntity<?> signup(
-            @Valid @RequestBody UserRequest userRequest, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
-        }
-
-        try {
-            userService.createUser(userRequest.getUserid(), userRequest.getPassword(),
-                    userRequest.getRole(), userRequest.getUsername(),
-                    userRequest.getEmail(), userRequest.getPhoneNumber(),
-                    userRequest.getBio());
-
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 등록된 사용자입니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 에러가 발생했습니다.");
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
 
     @GetMapping("/checkUserid")
     @Operation(summary = "Check if UserID exists", description = "특정 UserID가 이미 사용 중인지 확인합니다.")

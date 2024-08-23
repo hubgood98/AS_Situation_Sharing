@@ -1,39 +1,79 @@
 <html layout:decorate="~{layout}" lang="ko" xmlns:layout="http://www.w3.org/1999/xhtml">
-<div layout:fragment="content" class="container my-3">
-    <div class="my-3 border-bottom">
-        <div>
-            <h4>회원 가입</h4>
+
+<div layout:fragment="content" class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header text-center bg-primary text-white">
+                    <h4>회원 가입</h4>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post" onsubmit="return validateForm()">
+                        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+
+                        <!-- 로그인 ID 입력 및 중복 확인 -->
+                        <div class="mb-3">
+                            <label for="userid" class="form-label">로그인 ID</label>
+                            <div class="input-group">
+                                <input type="text" th:field="*{userid}" id="userid" class="form-control" style="flex: 1;" placeholder="아이디를 입력하세요">
+                                <button type="button" class="btn btn-outline-secondary" style="margin-left: 10px;" onclick="checkUserid()">중복 확인</button>
+                            </div>
+                        </div>
+
+                        <!-- 사용자 이름 입력 -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label">사용자 이름</label>
+                            <input type="text" th:field="*{username}" id="username" class="form-control" style="max-width: 400px;" placeholder="이름을 입력하세요">
+                        </div>
+
+                        <!-- 비밀번호 입력 -->
+                        <div class="mb-3">
+                            <label for="password1" class="form-label">비밀번호</label>
+                            <input type="password" th:field="*{password1}" id="password1" class="form-control" style="max-width: 400px;" placeholder="비밀번호를 입력하세요">
+                        </div>
+
+                        <!-- 비밀번호 확인 -->
+                        <div class="mb-3">
+                            <label for="password2" class="form-label">비밀번호 확인</label>
+                            <input type="password" th:field="*{password2}" id="password2" class="form-control" style="max-width: 400px;" placeholder="비밀번호를 다시 입력하세요">
+                        </div>
+
+                        <!-- 이메일 입력 및 중복 확인 -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">이메일</label>
+                            <div class="input-group">
+                                <input type="email" th:field="*{email}" id="email" class="form-control" style="flex: 1;" placeholder="이메일을 입력하세요">
+                                <button type="button" class="btn btn-outline-secondary" style="margin-left: 10px;" onclick="checkEmail()">중복 확인</button>
+                            </div>
+                        </div>
+
+                        <!-- 전화번호 입력 -->
+                        <div class="mb-3">
+                            <label for="phone_number" class="form-label">전화번호</label>
+                            <input type="text" th:field="*{phone_number}" id="phone_number" class="form-control" style="max-width: 400px;" placeholder="전화번호를 입력하세요">
+                        </div>
+
+                        <!-- 역할 선택 -->
+                        <div class="mb-3">
+                            <label for="role" class="form-label">사용자 역할</label>
+                            <select th:field="*{role}" id="role" class="form-control" style="max-width: 400px;">
+                                <option value="CUSTOMER">고객</option>
+                                <option value="TECHNICIAN">기술자</option>
+                            </select>
+                        </div>
+
+                        <!-- 회원가입 버튼 -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-block">회원 가입</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-
-    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post" onsubmit="return validateForm()">
-        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
-        <div class="mb-3">
-            <label for="username" class="form-label">사용자 ID</label>
-            <div class="input-group">
-                <input type="text" th:field="*{username}" id="username" class="form-control">
-                <button type="button" class="btn btn-secondary" onclick="checkUsername()">중복 확인</button>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label for="password1" class="form-label">비밀번호</label>
-            <input type="password" th:field="*{password1}" id="password1" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="password2" class="form-label">비밀번호 확인</label>
-            <input type="password" th:field="*{password2}" id="password2" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">이메일</label>
-            <div class="input-group">
-                <input type="email" th:field="*{email}" id="email" class="form-control">
-                <button type="button" class="btn btn-secondary" onclick="checkEmail()">중복 확인</button>
-            </div>
-        <button type="submit" class="btn btn-primary">회원 가입</button>
-        </div>
-    </form>
-
 </div>
+
+<!-- 스크립트 -->
 <th:block layout:fragment="AddScripts">
     <script th:src="@{/account.js}"></script>
 </th:block>
