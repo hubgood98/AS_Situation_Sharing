@@ -1,5 +1,6 @@
-package com.example.as_situation_sharing_web.user;
+package com.example.as_situation_sharing_web.domain;
 
+import com.example.as_situation_sharing_web.user.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,14 @@ public class UserData {
     private String username;
     private String password;
 
-    @Column(unique = true)
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;  // customer 또는 technician
+
+    @Column(unique = true, nullable = false)
     private String email;
+
+    private String phone_number;
+    private String bio; //자기소개칸
+
 }

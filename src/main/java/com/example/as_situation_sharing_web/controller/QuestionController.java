@@ -2,7 +2,7 @@ package com.example.as_situation_sharing_web.controller;
 
 import com.example.as_situation_sharing_web.domain.Question;
 import com.example.as_situation_sharing_web.service.QuestionService;
-import com.example.as_situation_sharing_web.user.UserData;
+import com.example.as_situation_sharing_web.domain.UserData;
 import com.example.as_situation_sharing_web.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

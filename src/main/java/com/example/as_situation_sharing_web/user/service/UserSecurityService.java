@@ -1,7 +1,7 @@
 package com.example.as_situation_sharing_web.user.service;
 
-import com.example.as_situation_sharing_web.user.UserData;
-import com.example.as_situation_sharing_web.user.UserRepository;
+import com.example.as_situation_sharing_web.domain.UserData;
+import com.example.as_situation_sharing_web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

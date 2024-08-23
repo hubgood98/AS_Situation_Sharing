@@ -1,6 +1,5 @@
 package com.example.as_situation_sharing_web.domain;
 
-import com.example.as_situation_sharing_web.user.UserData;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

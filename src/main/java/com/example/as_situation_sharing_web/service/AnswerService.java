@@ -3,7 +3,7 @@ package com.example.as_situation_sharing_web.service;
 import com.example.as_situation_sharing_web.domain.Answer;
 import com.example.as_situation_sharing_web.domain.Question;
 import com.example.as_situation_sharing_web.repository.AnswerRepository;
-import com.example.as_situation_sharing_web.user.UserData;
+import com.example.as_situation_sharing_web.domain.UserData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
