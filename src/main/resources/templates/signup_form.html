@@ -9,6 +9,9 @@
                 </div>
                 <div class="card-body">
                     <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post" onsubmit="return validateForm()">
+                        <!-- CSRF 토큰 -->
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
                         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
 
                         <!-- 로그인 ID 입력 및 중복 확인 -->

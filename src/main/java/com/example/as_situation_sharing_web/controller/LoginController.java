@@ -54,6 +54,13 @@ public class LoginController {
     public String signup(@Valid @ModelAttribute("userCreateForm") UserCreateForm userCreateForm,
                          BindingResult bindingResult,Model model) {
 
+        System.out.println("UserCreateForm userid: " + userCreateForm.getUserid());
+        System.out.println("UserCreateForm username: " + userCreateForm.getUsername());
+        System.out.println("UserCreateForm password1: " + userCreateForm.getPassword1());
+        System.out.println("UserCreateForm email: " + userCreateForm.getEmail());
+        System.out.println("UserCreateForm role: " + userCreateForm.getRole());
+
+        System.out.println("UserCreateForm: " + userCreateForm);
         if (bindingResult.hasErrors()) {
             return "signup_form";
         }
