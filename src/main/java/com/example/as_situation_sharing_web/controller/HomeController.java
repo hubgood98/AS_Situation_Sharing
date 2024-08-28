@@ -10,7 +10,13 @@ public class HomeController {
     @GetMapping("/")
     public String root()
     {
-        return "redirect:/question/list";
+        return "redirect:/home";
+    }
+
+    @GetMapping("/home")
+    public String home()
+    {
+        return "home";
     }
 
 }

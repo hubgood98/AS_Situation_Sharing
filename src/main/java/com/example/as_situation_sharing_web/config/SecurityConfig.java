@@ -21,22 +21,40 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
-                .csrf((csrf) -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
-                .headers((headers)-> headers.addHeaderWriter(new XFrameOptionsHeaderWriter(
-                        XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-                .formLogin((formLogin) -> formLogin
-                        .loginPage("/user/login")
-                        .defaultSuccessUrl("/api/user/repairs"))
-                .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                        .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true))
-        ;
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers("/static/**").permitAll() // 정적 리소스 경로 허용
+                                .requestMatchers(new AntPathRequestMatcher("/user/login"),
+                                        new AntPathRequestMatcher("/user/signup"),
+                                        new AntPathRequestMatcher("/h2-console/**"),
+                                        new AntPathRequestMatcher("/home")).permitAll() // 로그인 및 회원가입 경로 허용
+                                .anyRequest().authenticated() // 그 외의 모든 요청은 인증 필요
+                )
+                .csrf(csrf ->
+                        csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")) // CSRF 비활성화 설정
+                )
+                .headers(headers ->
+                        headers.addHeaderWriter(new XFrameOptionsHeaderWriter(
+                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+                )
+                .formLogin(formLogin ->
+                        formLogin
+                                .loginPage("/user/login") // 사용자 정의 로그인 페이지
+                                .failureUrl("/user/login?error=true") // 로그인 실패 시 리다이렉트
+                                .defaultSuccessUrl("/api/repair/list", true) // 로그인 성공 시 리다이렉트
+                                .permitAll()
+                )
+                .logout(logout ->
+                        logout
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                                .logoutSuccessUrl("/")
+                                .invalidateHttpSession(true)
+                );
 
         return http.build();
-
     }
+
+
 
     @Bean
     PasswordEncoder passwordEncoder() {
