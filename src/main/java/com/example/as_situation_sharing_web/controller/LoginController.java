@@ -2,8 +2,8 @@ package com.example.as_situation_sharing_web.controller;
 
 import com.example.as_situation_sharing_web.service.UserService;
 import com.example.as_situation_sharing_web.user.UserCreateForm;
+import com.example.as_situation_sharing_web.user.UserRole;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -51,43 +50,55 @@ public class LoginController {
     //Todo 로그인할때 빈 값으로 전송되는 문제 수정해야함.
     @PostMapping("/signup")
     @Operation(summary = "User signup", description = "새로운 사용자를 등록합니다.")
-    public String signup(@Valid @ModelAttribute("userCreateForm") UserCreateForm userCreateForm,
-                         BindingResult bindingResult,Model model) {
+    public String signup(
+            @RequestParam("userid") String userid,
+            @RequestParam("username") String username,
+            @RequestParam("password1") String password1,
+            @RequestParam("password2") String password2,
+            @RequestParam("email") String email,
+            @RequestParam("phoneNumber") String phoneNumber,
+            @RequestParam("role") String role,
+            Model model) {
 
-        System.out.println("UserCreateForm userid: " + userCreateForm.getUserid());
-        System.out.println("UserCreateForm username: " + userCreateForm.getUsername());
-        System.out.println("UserCreateForm password1: " + userCreateForm.getPassword1());
-        System.out.println("UserCreateForm email: " + userCreateForm.getEmail());
-        System.out.println("UserCreateForm role: " + userCreateForm.getRole());
-
-        System.out.println("UserCreateForm: " + userCreateForm);
-        if (bindingResult.hasErrors()) {
-            return "signup_form";
+        // 수동 유효성 검사
+        if (userid == null || userid.trim().isEmpty()) {
+            model.addAttribute("useridError", "사용자 ID는 필수 항목입니다.");
+        }
+        if (username == null || username.trim().isEmpty()) {
+            model.addAttribute("usernameError", "사용자 이름은 필수 항목입니다.");
+        }
+        if (password1 == null || password1.length() < 8) {
+            model.addAttribute("password1Error", "비밀번호는 최소 8자 이상이어야 합니다.");
+        }
+        if (!password1.equals(password2)) {
+            model.addAttribute("password2Error", "2개의 비밀번호가 일치하지 않습니다.");
+        }
+        if (email == null || email.trim().isEmpty()) {
+            model.addAttribute("emailError", "이메일은 필수 항목입니다.");
+        }
+        if (role == null || (!role.equals("CUSTOMER") && !role.equals("TECHNICIAN"))) {
+            model.addAttribute("roleError", "올바른 사용자 역할을 선택하세요.");
         }
 
-        if (!userCreateForm.isPasswordConfirmed()) {
-            bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
+        // 오류가 있을 경우, 다시 폼으로 이동
+        if (model.containsAttribute("useridError") || model.containsAttribute("usernameError") ||
+                model.containsAttribute("password1Error") || model.containsAttribute("password2Error") ||
+                model.containsAttribute("emailError") || model.containsAttribute("roleError")) {
             return "signup_form";
         }
 
         try {
-            userService.createUser(
-                    userCreateForm.getUserid(),
-                    userCreateForm.getPassword1(),
-                    userCreateForm.getRole(),
-                    userCreateForm.getUsername(),
-                    userCreateForm.getEmail(),
-                    userCreateForm.getPhoneNumber(),
-                    userCreateForm.getBio());
-
+            // userService를 통해 사용자 생성
+            userService.createUser(userid, password1, UserRole.valueOf(role), username, email, phoneNumber, "");
         } catch (DataIntegrityViolationException e) {
-            bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
+            model.addAttribute("signupFailed", "이미 등록된 사용자입니다.");
             return "signup_form";
         } catch (Exception e) {
-            bindingResult.reject("signupFailed", "서버 에러가 발생했습니다.");
+            model.addAttribute("signupFailed", "서버 에러가 발생했습니다.");
             return "signup_form";
         }
 
         return "redirect:/user/login"; // 회원가입 후 로그인 페이지로 리다이렉트
     }
+
 }
